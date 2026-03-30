@@ -12,7 +12,7 @@ export function cn(...inputs: ClassValue[]) {
    API Base
 --------------------------------*/
 export const API_BASE_URL =
-  "https://ashaboutique-backend-1-2.onrender.com";
+  "https://api.ashaboutique.co.in";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
