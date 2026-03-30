@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,14 +26,15 @@ const ProductCard = ({
   // 🔹 Replace with your WhatsApp number (country code, no +)
   const whatsappNumber = "918123456789";
 
-  const whatsappMessage = encodeURIComponent(
-    `Hi, I want to buy this product:\n\n` +
-      `Name: ${name}\n` +
-      `Price: ₹${price.toLocaleString("en-IN")}\n` +
-      `Category: ${category}`
-  );
-
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  const whatsappUrl = useMemo(() => {
+    const whatsappMessage = encodeURIComponent(
+      `Hi, I want to buy this product:\n\n` +
+        `Name: ${name}\n` +
+        `Price: ₹${price.toLocaleString("en-IN")}\n` +
+        `Category: ${category}`
+    );
+    return `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  }, [category, name, price, whatsappNumber]);
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault(); // prevent Link navigation
@@ -58,6 +60,8 @@ const ProductCard = ({
           <img
             src={image || "/placeholder.svg"}
             alt={name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
               if (e.currentTarget.src.includes("/placeholder.svg")) return;
@@ -97,4 +101,4 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

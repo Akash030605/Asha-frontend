@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -26,15 +26,74 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 60000]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const pageSize = 24; // smaller initial render for speed
 
   useEffect(() => {
-    const params = new URLSearchParams();
-    params.set("limit", "48");
-    if (selectedCategory !== "All") params.set("category", selectedCategory);
-    apiFetch<{ status: string; data: { products: Product[] } }>(`/api/products?${params.toString()}`)
-      .then((res) => setProducts(res.data.products || []))
-      .catch(() => setProducts([]));
+    // Reset pagination when filters change
+    setProducts([]);
+    setPage(1);
+    setHasMore(true);
   }, [selectedCategory]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const run = async () => {
+      if (!hasMore || loading) return;
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.set("limit", String(pageSize));
+        params.set("page", String(page));
+        if (selectedCategory !== "All") params.set("category", selectedCategory);
+
+        const res = await apiFetch<{ status: string; data: { products: Product[] } }>(
+          `/api/products?${params.toString()}`
+        );
+
+        if (cancelled) return;
+        const next = res.data.products || [];
+        setProducts((prev) => (page === 1 ? next : [...prev, ...next]));
+        setHasMore(next.length === pageSize);
+      } catch {
+        if (!cancelled) {
+          setProducts((prev) => (page === 1 ? [] : prev));
+          setHasMore(false);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [hasMore, loading, page, pageSize, selectedCategory]);
+
+  const productCards = useMemo(
+    () =>
+      products.map((p) => (
+        <ProductCard
+          key={p._id}
+          id={p._id}
+          name={p.name}
+          price={p.price}
+          image={
+            buildCloudinaryImageUrl(p.public_id) ||
+            (p.image ? buildUploadUrl(p.image) : undefined)
+          }
+          category={p.category}
+          isNew={p.isNew}
+          isSale={p.isSale}
+        />
+      )),
+    [products]
+  );
 
   return (
     <div className="min-h-screen">
@@ -119,21 +178,23 @@ const Shop = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {products.map((p) => (
-                <ProductCard
-                  key={p._id}
-                  id={p._id}
-                  name={p.name}
-                  price={p.price}
-                  image={
-                    buildCloudinaryImageUrl(p.public_id) ||
-                    (p.image ? buildUploadUrl(p.image) : undefined)
-                  }
-                  category={p.category}
-                  isNew={p.isNew}
-                  isSale={p.isSale}
-                />
-              ))}
+              {productCards}
+            </div>
+
+            <div className="mt-10 flex justify-center">
+              {hasMore ? (
+                <Button
+                  variant="outline"
+                  disabled={loading}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  {loading ? "Loading..." : "Load more"}
+                </Button>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  {products.length === 0 ? "No products found." : "You’ve reached the end."}
+                </p>
+              )}
             </div>
           </div>
         </div>
