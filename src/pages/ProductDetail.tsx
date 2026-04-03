@@ -7,12 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, ShoppingCart, Minus, Plus } from "lucide-react";
 import { apiFetch, buildCloudinaryImageUrl, buildUploadUrl } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
+
+  usePageTitle(product?.name ? `${product.name} | Asha Boutique` : "Asha Boutique");
 
   const { data: product, isLoading, isError } = useQuery({
     queryKey: ["product", id],

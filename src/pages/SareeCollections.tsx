@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -22,6 +23,7 @@ interface CollectionItem {
 import { useQuery } from "@tanstack/react-query";
 
 const SareesCollection = () => {
+  usePageTitle("Silk Saree Collection | Asha Boutique");
   const { data: sarees = [], isLoading: loading, error: queryError } = useQuery({
     queryKey: ["sareesCollection"],
     queryFn: async () => {

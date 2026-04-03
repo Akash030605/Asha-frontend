@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@/components/Navbar";
@@ -16,6 +17,7 @@ const values = [
 ];
 
 export default function About() {
+  usePageTitle("About Us | Asha Boutique");
   const heroRef    = useRef<HTMLDivElement>(null);
   const storyRef   = useRef<HTMLElement>(null);
   const valuesRef  = useRef<HTMLElement>(null);

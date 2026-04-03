@@ -6,6 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const isTouch = () => window.matchMedia("(pointer: coarse)").matches;
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const dotRef  = useRef<HTMLDivElement>(null);
@@ -49,21 +51,20 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   }, [debouncedRefresh]);
 
   useEffect(() => {
-    ScrollTrigger.clearScrollMemory("manual");
-
     window.scrollTo(0, 0);
-    const lenis = getLenis();
-    if (lenis) {
-      lenis.scrollTo(0, { immediate: true });
-    }
+    getLenis()?.scrollTo(0, { immediate: true });
 
-    ScrollTrigger.refresh(true);
+    const raf = requestAnimationFrame(() => {
+      ScrollTrigger.clearScrollMemory("manual");
+      ScrollTrigger.refresh(true);
+    });
 
-    const rt1 = setTimeout(() => ScrollTrigger.refresh(), 100);
-    const rt2 = setTimeout(() => ScrollTrigger.refresh(), 500);
-    const rt3 = setTimeout(() => ScrollTrigger.refresh(), 1200);
+    const rt1 = setTimeout(() => ScrollTrigger.refresh(), 150);
+    const rt2 = setTimeout(() => ScrollTrigger.refresh(), 600);
+    const rt3 = setTimeout(() => ScrollTrigger.refresh(), 1400);
 
     return () => {
+      cancelAnimationFrame(raf);
       clearTimeout(rt1);
       clearTimeout(rt2);
       clearTimeout(rt3);
@@ -71,6 +72,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   }, [location.pathname]);
 
   useEffect(() => {
+    if (isTouch()) return;
+
     const dot  = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
@@ -81,8 +84,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      dot.style.left  = mx + "px";
-      dot.style.top   = my + "px";
+      dot.style.left = mx + "px";
+      dot.style.top  = my + "px";
     };
 
     const animate = () => {
@@ -104,8 +107,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <div id="cursor-dot"  ref={dotRef}  />
-      <div id="cursor-ring" ref={ringRef} />
+      {!isTouch() && <div id="cursor-dot"  ref={dotRef}  />}
+      {!isTouch() && <div id="cursor-ring" ref={ringRef} />}
       {children}
     </>
   );

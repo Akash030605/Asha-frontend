@@ -74,7 +74,12 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     overflow-x: hidden;
-    cursor: none;                   /* custom cursor */
+    cursor: none;
+  }
+  @media (pointer: coarse) {
+    body { cursor: auto; }
+    #cursor-dot, #cursor-ring { display: none !important; }
+    a, button { cursor: pointer; }
   }
   h1, h2, h3, h4, h5, h6 { @apply font-serif; }
 

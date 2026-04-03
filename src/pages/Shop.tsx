@@ -9,6 +9,7 @@ import { apiFetch, buildCloudinaryImageUrl, buildUploadUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 type Product = {
   _id: string; name: string; price: number; category: string;
@@ -19,6 +20,7 @@ const CATEGORIES = ["All", "Sarees", "Lehengas", "Blouses", "Gowns", "Bridal", "
 const PAGE_SIZE = 24;
 
 export default function Shop() {
+  usePageTitle("Shop All | Asha Boutique");
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const headerRef = useRef<HTMLDivElement>(null);

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -63,6 +64,7 @@ function CollectionSection({ title, items, collectionPath }: { title: string; it
 }
 
 export default function Collections() {
+  usePageTitle("Collections | Sarees, Lehengas & Blouses | Asha Boutique");
   const [sarees,   setSarees]   = useState<CollectionItem[]>([]);
   const [lehengas, setLehengas] = useState<CollectionItem[]>([]);
   const [blouses,  setBlouses]  = useState<CollectionItem[]>([]);

@@ -1,3 +1,4 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategoryNav from "@/components/CategoryNav";
@@ -10,6 +11,7 @@ import ReviewsSection from "@/components/ReviewsSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  usePageTitle("Asha Boutique | Handcrafted Sarees, Lehengas & Custom Tailoring");
   return (
     <div className="min-h-screen">
       <Navbar />

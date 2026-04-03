@@ -62,7 +62,10 @@ export default function Hero() {
       });
 
     }, wrapRef);
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      if (maskRef.current) gsap.set(maskRef.current, { yPercent: -100 });
+    };
   }, []);
 
   const repeated = [...TICKER, ...TICKER, ...TICKER];
