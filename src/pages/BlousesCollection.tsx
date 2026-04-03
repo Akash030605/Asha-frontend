@@ -19,27 +19,20 @@ interface CollectionItem {
   isFeatured: boolean;
 }
 
+import { useQuery } from "@tanstack/react-query";
+
 const BlousesCollection = () => {
-  const [blouses, setBlouses] = useState<CollectionItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: blouses = [], isLoading: loading, error: queryError } = useQuery({
+    queryKey: ["blousesCollection"],
+    queryFn: async () => {
+      const response = await apiFetch<{ data: { blouses: CollectionItem[] } }>(
+        "/api/blouses?limit=50"
+      );
+      return response.data?.blouses || [];
+    },
+  });
 
-  useEffect(() => {
-    const fetchBlouses = async () => {
-      try {
-        setLoading(true);
-        const response = await apiFetch<{ data: { blouses: CollectionItem[] } }>("/api/blouses?limit=50");
-        setBlouses(response.data?.blouses || []);
-      } catch (err: any) {
-        console.error("Failed to fetch blouses:", err);
-        setError(err?.message || "Failed to load blouses collection");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBlouses();
-  }, []);
+  const error = queryError?.message || null;
 
   return (
     <div className="min-h-screen">

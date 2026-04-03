@@ -1,263 +1,130 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { apiFetch, buildCloudinaryImageUrl, buildUploadUrl } from "@/lib/utils";
 
+gsap.registerPlugin(ScrollTrigger);
+
 interface CollectionItem {
-  _id: string;
-  name: string;
-  description: string;
-  category: string;
-  public_id?: string | null;
-  // Legacy schema
-  image?: string | null;
-  fabric?: string;
-  style?: string;
-  occasion?: string;
-  work_type?: string;
-  color?: string;
-  isNew: boolean;
-  isFeatured: boolean;
-  created_at: string;
+  _id: string; name: string; description: string; category: string;
+  public_id?: string | null; image?: string | null;
+  isNew: boolean; isFeatured: boolean; created_at: string;
 }
 
-const CollectionSection = ({ 
-  title, 
-  items, 
-  collectionPath 
-}: { 
-  title: string; 
-  items: any[]; 
-  collectionPath: string 
-}) => {
-  const displayItems = items.slice(0, 4); // Show only 4 items initially
+function CollectionSection({ title, items, collectionPath }: { title: string; items: CollectionItem[]; collectionPath: string }) {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!ref.current || items.length === 0) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".c-card",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, stagger: 0.08, duration: 0.6,
+          scrollTrigger: { trigger: ref.current, start: "top 82%" } }
+      );
+    }, ref);
+    return () => ctx.revert();
+  }, [items]);
+
+  if (items.length === 0) return null;
 
   return (
-    <section className="py-12 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
+    <section ref={ref} className="py-16 border-b border-border last:border-0">
+      <div className="container mx-auto px-6 md:px-10">
+        <div className="flex items-end justify-between mb-9">
           <div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">
-              {title}
-            </h2>
-            <p className="text-muted-foreground">
-              Explore our exquisite collection of {title.toLowerCase()}
-            </p>
+            <p className="text-xs tracking-[0.3em] uppercase text-primary font-sans mb-2">Collection</p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold">{title}</h2>
           </div>
-          <Link
-            to={`/collections/${collectionPath}`}
-            className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors"
-          >
-            View All
-            <svg 
-              className="ml-2 w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+          <Link to={`/collections/${collectionPath}`}
+            className="hidden md:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors">
+            View All <span>→</span>
           </Link>
         </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-          {displayItems.map((item) => (
-            <ProductCard 
-              key={item._id}
-              id={item._id}
-              name={item.name}
-              // Since collections don't have prices, we can set a placeholder or remove price
-              price={0} // Or you can modify ProductCard to handle no-price scenario
-              image={
-                item.public_id
-                  ? (buildCloudinaryImageUrl(item.public_id) || "/placeholder.svg")
-                  : item.image
-                    ? (buildUploadUrl(item.image) || "/placeholder.svg")
-                    : "/placeholder.svg"
-              }
-              category={item.category}
-              isNew={item.isNew}
-              // You might want to add isFeatured or other props as needed
-            />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-7">
+          {items.slice(0, 4).map((item) => (
+            <ProductCard key={item._id} id={item._id} name={item.name} price={0}
+              image={item.public_id ? buildCloudinaryImageUrl(item.public_id) : item.image ? buildUploadUrl(item.image) : undefined}
+              category={item.category} isNew={item.isNew} className="c-card" />
           ))}
         </div>
-
-        {/* Show More Button for Mobile */}
-        <div className="mt-8 text-center md:hidden">
-          <Link
-            to={`/collections/${collectionPath}`}
-            className="inline-flex items-center px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
-          >
-            Show More {title}
-            <svg 
-              className="ml-2 w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+        <div className="mt-7 md:hidden text-center">
+          <Link to={`/collections/${collectionPath}`}
+            className="inline-flex items-center gap-2 px-6 py-2.5 border border-primary text-primary rounded-full text-sm hover:bg-primary hover:text-white transition-colors">
+            View All {title}
           </Link>
         </div>
       </div>
     </section>
   );
-};
+}
 
-const Collections = () => {
-  const [sarees, setSarees] = useState<CollectionItem[]>([]);
+export default function Collections() {
+  const [sarees,   setSarees]   = useState<CollectionItem[]>([]);
   const [lehengas, setLehengas] = useState<CollectionItem[]>([]);
-  const [blouses, setBlouses] = useState<CollectionItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [blouses,  setBlouses]  = useState<CollectionItem[]>([]);
+  const [loading,  setLoading]  = useState(true);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch data from all three collection APIs
-        const [sareesRes, lehengasRes, blousesRes] = await Promise.all([
-          apiFetch<{ data: { sarees: CollectionItem[] } }>("/api/sarees?limit=8"),
-          apiFetch<{ data: { lehengas: CollectionItem[] } }>("/api/lehengas?limit=8"),
-          apiFetch<{ data: { blouses: CollectionItem[] } }>("/api/blouses?limit=8")
-        ]);
-
-        setSarees(sareesRes.data?.sarees || []);
-        setLehengas(lehengasRes.data?.lehengas || []);
-        setBlouses(blousesRes.data?.blouses || []);
-
-      } catch (err: any) {
-        console.error("Failed to fetch collections:", err);
-        setError(err?.message || "Failed to load collections");
-        
-        // Fallback to empty arrays if API fails
-        setSarees([]);
-        setLehengas([]);
-        setBlouses([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCollections();
+    if (!heroRef.current) return;
+    gsap.fromTo(heroRef.current.querySelectorAll(".h-reveal"),
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, stagger: 0.1, duration: 0.65, delay: 0.15, ease: "power2.out" }
+    );
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <Navbar />
-        
-        {/* Hero Section Skeleton */}
-        <section className="relative py-20 bg-gradient-to-b from-primary/5 to-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-              <div className="h-12 bg-muted rounded-lg mb-6 mx-auto w-64 animate-pulse"></div>
-              <div className="h-6 bg-muted rounded mx-auto w-96 animate-pulse"></div>
-            </div>
-          </div>
-        </section>
-
-        {/* Collection Sections Skeleton */}
-        {[1, 2, 3].map((section) => (
-          <section key={section} className="py-12 bg-background">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <div className="h-8 bg-muted rounded w-48 mb-2 animate-pulse"></div>
-                  <div className="h-4 bg-muted rounded w-64 animate-pulse"></div>
-                </div>
-                <div className="h-6 bg-muted rounded w-20 animate-pulse"></div>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-                {[1, 2, 3, 4].map((item) => (
-                  <div key={item} className="animate-pulse">
-                    <div className="aspect-[4/5] bg-muted rounded-lg mb-4"></div>
-                    <div className="h-4 bg-muted rounded mb-2"></div>
-                    <div className="h-6 bg-muted rounded mb-2"></div>
-                    <div className="h-4 bg-muted rounded w-16"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        ))}
-
-        <Footer />
-      </div>
-    );
-  }
+  useEffect(() => {
+    Promise.all([
+      apiFetch<any>("/api/sarees?limit=8"),
+      apiFetch<any>("/api/lehengas?limit=8"),
+      apiFetch<any>("/api/blouses?limit=8"),
+    ]).then(([s, l, b]) => {
+      setSarees(s.data?.sarees || []);
+      setLehengas(l.data?.lehengas || []);
+      setBlouses(b.data?.blouses || []);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-b from-primary/5 to-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto animate-fade-in">
-            <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-foreground">
-              Our Collections
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground">
-              Exquisite designs handcrafted with love at Asha Boutique. Each piece tells a story of elegance, tradition, and timeless beauty.
-            </p>
-            {error && (
-              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <p className="text-yellow-700 text-sm">
-                  Note: Some data may not be available. {error}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
-      {/* Sarees Collection */}
-      <CollectionSection 
-        title="Sarees" 
-        items={sarees} 
-        collectionPath="sarees" 
-      />
-
-      {/* Lehengas Collection */}
-      <CollectionSection 
-        title="Lehengas" 
-        items={lehengas} 
-        collectionPath="lehengas" 
-      />
-
-      {/* Blouses Collection */}
-      <CollectionSection 
-        title="Blouses" 
-        items={blouses} 
-        collectionPath="blouses" 
-      />
-
-      {/* All Collections CTA */}
-      <section className="py-16 bg-primary/5">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-foreground">
-            Can't Find What You're Looking For?
-          </h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Explore our complete catalog with hundreds of exclusive designs and custom options.
+      {/* Hero */}
+      <div ref={heroRef} className="pt-28 pb-14 bg-surface border-b border-border">
+        <div className="container mx-auto px-6 md:px-10">
+          <p className="h-reveal text-xs tracking-[0.35em] uppercase text-primary font-sans mb-3">Asha Boutique</p>
+          <h1 className="h-reveal text-5xl md:text-6xl font-serif font-bold">Our Collections</h1>
+          <p className="h-reveal text-muted-foreground mt-4 max-w-xl text-base">
+            Each piece tells a story of elegance, tradition, and timeless beauty — handcrafted with love.
           </p>
-          <Link
-            to="/products"
-            className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 text-lg"
-          >
-            Browse All Products
-            <svg 
-              className="ml-3 w-5 h-5" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+        </div>
+      </div>
+
+      {/* Collections */}
+      {loading ? (
+        <div className="py-20 text-center">
+          <div className="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : (
+        <div className="py-6">
+          <CollectionSection title="Sarees"   items={sarees}   collectionPath="sarees" />
+          <CollectionSection title="Lehengas" items={lehengas} collectionPath="lehengas" />
+          <CollectionSection title="Blouses"  items={blouses}  collectionPath="blouses" />
+        </div>
+      )}
+
+      {/* CTA */}
+      <section className="py-16 bg-surface">
+        <div className="container mx-auto px-6 md:px-10 text-center">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Looking for Something Specific?</h2>
+          <p className="text-muted-foreground mb-8 text-base">Browse our complete catalogue or get in touch for custom orders.</p>
+          <Link to="/shop"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white rounded-full text-sm font-medium tracking-wide hover:bg-primary-light transition-colors">
+            Browse All Products →
           </Link>
         </div>
       </section>
@@ -265,6 +132,4 @@ const Collections = () => {
       <Footer />
     </div>
   );
-};
-
-export default Collections;
+}

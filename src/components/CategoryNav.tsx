@@ -1,38 +1,55 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const categories = [
-  { name: "Sarees", slug: "sarees" },
+  { name: "All",      slug: "" },
+  { name: "Sarees",   slug: "sarees" },
   { name: "Lehengas", slug: "lehengas" },
-  { name: "Blouses", slug: "blouses" },
-  { name: "Gowns", slug: "gowns" },
-  { name: "Bridal", slug: "bridal" },
-  { name: "Suits", slug: "suits" },
+  { name: "Blouses",  slug: "blouses" },
+  { name: "Bridal",   slug: "bridal" },
+  { name: "Gowns",    slug: "gowns" },
+  { name: "Suits",    slug: "suits" },
 ];
 
-const CategoryNav = () => {
+export default function CategoryNav() {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    gsap.fromTo(ref.current.querySelectorAll(".cat-item"),
+      { opacity: 0, y: 10 },
+      {
+        opacity: 1, y: 0, duration: 0.45, stagger: 0.05, ease: "power2.out",
+        scrollTrigger: { trigger: ref.current, start: "top 92%" },
+      }
+    );
+  }, []);
+
   return (
-    <section className="border-b border-border bg-background">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-hide">
-          {categories.map((category) => (
+    <section ref={ref} className="border-y border-border bg-white">
+      <div className="container-pad">
+        <div className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
+          {categories.map((c, i) => (
             <Link
-              key={category.slug}
-              to={`/shop?category=${category.slug}`}
+              key={c.slug}
+              to={c.slug ? `/shop?category=${c.slug}` : "/shop"}
               className={cn(
-                "px-6 py-2.5 rounded-full border border-border",
-                "text-sm font-medium whitespace-nowrap",
-                "hover:border-primary hover:text-primary hover:bg-primary/5",
-                "transition-all duration-200"
+                "cat-item flex-shrink-0 px-5 py-4 text-[11px] font-medium tracking-[0.22em] uppercase",
+                "border-r border-border last:border-r-0",
+                "text-muted-foreground hover:text-foreground hover:bg-surface transition-colors duration-200",
+                i === 0 && "text-foreground"
               )}
             >
-              {category.name}
+              {c.name}
             </Link>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default CategoryNav;
+}

@@ -5,23 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <title>Asha Boutique -  Fashion & Custom Tailoring</title>
-    <link rel="icon" href="/src/assets/logo/logo.jpeg" type="image/jpeg" />
-    <link rel="apple-touch-icon" href="/src/assets/logo/logo.jpeg" />
+    <link rel="icon" href="/logo.jpeg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="/logo.jpeg" />
     <meta name="description" content="Discover exquisite handcrafted sarees, lehengas, and bespoke tailoring at Asha Boutique. Timeless elegance crafted for you by Asha Sharma." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta name="author" content="Boutique" />
 
-    <meta property="og:title" content="dcb481d5-717e-45c4-9869-ff419f54a6b2" />
-    <meta property="og:description" content="Asha Boutique" />
+    <meta property="og:title" content="Asha Boutique — Handcrafted Elegance" />
+    <meta property="og:description" content="Discover exquisite handcrafted sarees, lehengas, and bespoke tailoring at Asha Boutique." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="/logo.jpeg" />
 
 
+  <style>
+    /* ── Preloader — matches theme palette ──────────────────────
+       Background : warm ivory  hsl(30,18%,99%)  ≈ #fdfcfb
+       "Asha"     : magenta-rose hsl(310,68%,38%) ≈ #9d1f72
+       "Boutique" : sapphire-violet hsl(248,46%,40%) ≈ #3b3580
+       Subtitle   : muted violet-grey hsl(248,12%,58%)
+       Bar track  : hsl(30,14%,91%)
+       Bar fill   : rose → violet via keyframe color shift
+    ────────────────────────────────────────────────────────────── */
+    #preloader {
+      position: fixed; inset: 0;
+      background: hsl(30,18%,99%);
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: flex-end;
+      padding: 48px 56px;
+      z-index: 9999;
+      transition: opacity 0.75s cubic-bezier(0.76,0,0.24,1), visibility 0.75s;
+    }
+    #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* Brand name */
+    .pl-brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: baseline;
+      gap: 0.3em;
+    }
+    .pl-asha {
+      display: inline-block;
+      color: hsl(310,68%,38%);
+      animation: pl-up 0.85s cubic-bezier(0.16,1,0.3,1) 0.05s both;
+    }
+    .pl-boutique {
+      display: inline-block;
+      color: hsl(248,46%,40%);
+      font-size: 0.55em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 500;
+      animation: pl-up 0.85s cubic-bezier(0.16,1,0.3,1) 0.15s both;
+    }
+
+    /* Subtitle */
+    .pl-sub {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: hsl(248,12%,62%);
+      margin-top: 10px;
+      animation: pl-fade 0.7s ease 0.45s both;
+    }
+
+    /* Progress bar */
+    .pl-bar-wrap {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: hsl(30,14%,91%);
+    }
+    .pl-bar {
+      height: 100%;
+      width: 0%;
+      animation: pl-fill 1.15s cubic-bezier(0.76,0,0.24,1) 0.1s forwards,
+                 pl-color 1.15s ease 0.1s forwards;
+    }
+
+    @keyframes pl-up {
+      from { transform: translateY(110%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes pl-fade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes pl-fill {
+      to { width: 100%; }
+    }
+    @keyframes pl-color {
+      0%   { background: hsl(310,68%,38%); }   /* rose */
+      60%  { background: hsl(290,56%,38%); }   /* rose-violet mid */
+      100% { background: hsl(248,46%,40%); }   /* violet */
+    }
+  </style>
   </head>
 
   <body>
+    <div id="preloader">
+      <div class="pl-brand">
+        <span class="pl-asha">Asha</span>
+        <span class="pl-boutique">Boutique</span>
+      </div>
+      <div class="pl-sub">Handcrafted Elegance</div>
+      <div class="pl-bar-wrap"><div class="pl-bar"></div></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

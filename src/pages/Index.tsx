@@ -2,10 +2,13 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategoryNav from "@/components/CategoryNav";
 import FeaturedProducts from "@/components/FeaturedProducts";
-import ReviewsSection from "@/components/ReviewsSection";
-import AboutSection from "@/components/AboutSection";
-import Footer from "@/components/Footer";
 import Collections from "@/components/Collections";
+import MarqueeStrip from "@/components/MarqueeStrip";
+import ProcessSection from "@/components/ProcessSection";
+import AboutSection from "@/components/AboutSection";
+import ReviewsSection from "@/components/ReviewsSection";
+import Footer from "@/components/Footer";
+
 const Index = () => {
   return (
     <div className="min-h-screen">
@@ -13,7 +16,11 @@ const Index = () => {
       <Hero />
       <CategoryNav />
       <FeaturedProducts />
+      <MarqueeStrip />
       <Collections />
+      <ProcessSection />
+      <AboutSection />
+      <MarqueeStrip direction="right" dark />
       <ReviewsSection />
       <Footer />
     </div>

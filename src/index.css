@@ -2,105 +2,151 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    /* Base colors - luxury fashion palette */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    
-    /* Brand colors */
-    --primary: 349 85% 24%; /* Deep maroon #6b0f1a */
-    --primary-foreground: 0 0% 98%;
-    --primary-light: 349 70% 35%;
-    
-    --accent: 32 87% 69%; /* Warm gold #f5b56a */
-    --accent-foreground: 222 47% 11%;
-    --accent-light: 32 95% 80%;
-    
-    /* UI colors */
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    
-    --muted: 220 13% 96%;
-    --muted-foreground: 215 16% 47%;
-    
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 349 85% 24%;
-    
-    --destructive: 0 84% 60%;
+    /* ── Brand ─────────────────────────────────────────────────
+       Primary   : magenta-rose  hsl(310 68% 38%)
+       Secondary : sapphire-violet hsl(248 46% 40%)
+       Accent    : antique gold  hsl(36 62% 44%)
+    ──────────────────────────────────────────────────────────── */
+    --primary:            310 68% 38%;
+    --primary-foreground: 0   0%  98%;
+    --primary-light:      310 52% 56%;
+    --primary-muted:      310 28% 95%;   /* blush tint — used for hover surfaces */
+
+    --secondary:          248 46% 40%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-light:    248 38% 58%;
+    --secondary-muted:    248 22% 95%;   /* lavender tint — used for subtle surfaces */
+
+    --accent:             36  62% 44%;   /* antique gold */
+    --accent-foreground:  36  30% 10%;
+
+    /* ── Surfaces — warm ivory tones harmonise with rose-violet ─ */
+    --background:         30  18% 99%;   /* warm ivory white */
+    --surface:            30  14% 97%;   /* soft cream */
+    --surface-2:          248 10% 93%;   /* cool lavender-grey */
+
+    /* ── Foreground — deep indigo-black (richer than pure black) ─ */
+    --foreground:         248 28%  9%;   /* used as text AND dark bg (footer/overlay) */
+    --card:               30  18% 99%;
+    --card-foreground:    248 28%  9%;
+
+    /* ── UI chrome ───────────────────────────────────────────── */
+    --muted:              248 10% 91%;
+    --muted-foreground:   248 12% 46%;
+    --border:             310 10% 87%;   /* faint rose-tinted dividers */
+    --input:              310 10% 87%;
+    --ring:               310 68% 38%;
+
+    --destructive:        0  84% 60%;
     --destructive-foreground: 0 0% 98%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    
-    --secondary: 220 13% 96%;
-    --secondary-foreground: 222 47% 11%;
-    
-    --radius: 0.75rem;
-    
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(220 13% 0% / 0.05);
-    --shadow: 0 4px 6px -1px hsl(220 13% 0% / 0.1);
-    --shadow-md: 0 10px 15px -3px hsl(220 13% 0% / 0.1);
-    --shadow-lg: 0 20px 25px -5px hsl(220 13% 0% / 0.1);
-    
-    /* Transitions */
-    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(349 85% 24%), hsl(349 70% 35%));
-    --gradient-accent: linear-gradient(135deg, hsl(32 87% 69%), hsl(32 95% 80%));
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 0% / 0.3), hsl(0 0% 0% / 0.1));
+    --popover:            30  18% 99%;
+    --popover-foreground: 248 28%  9%;
+
+    --radius: 0px;
   }
-  
+
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 0 0% 98%;
-    
-    --primary: 349 70% 45%;
-    --primary-foreground: 0 0% 98%;
-    
-    --accent: 32 87% 69%;
-    --accent-foreground: 222 47% 11%;
-    
-    --card: 222 40% 15%;
-    --card-foreground: 0 0% 98%;
-    
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
-    
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 349 70% 45%;
+    --background:         248 25%  7%;
+    --foreground:         30  10%  97%;
+    --surface:            248 22% 10%;
+    --surface-2:          248 20% 14%;
+    --card:               248 22% 10%;
+    --card-foreground:    30  10%  97%;
+    --muted:              248 18% 16%;
+    --muted-foreground:   248 12% 58%;
+    --border:             310 14% 18%;
+    --input:              310 14% 18%;
+    --primary:            310 60% 60%;
+    --primary-light:      310 52% 70%;
+    --primary-muted:      310 28% 16%;
+    --secondary:          248 42% 62%;
+    --secondary-light:    248 36% 72%;
+    --secondary-muted:    248 22% 16%;
+    --accent:             36  58% 55%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; box-sizing: border-box; }
+  html { scroll-behavior: auto; }   /* Lenis handles smooth scroll */
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+    cursor: none;                   /* custom cursor */
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
-  }
+  h1, h2, h3, h4, h5, h6 { @apply font-serif; }
+
+  /* Hide scrollbar while Lenis runs */
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
 }
 
 @layer utilities {
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg;
-  }
-  
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance   { text-wrap: balance; }
+  .section-pad    { @apply py-24 md:py-32; }
+  .container-pad  { @apply px-5 md:px-10 lg:px-16; }
+  .bg-surface          { background: hsl(var(--surface)); }
+  .bg-surface-2        { background: hsl(var(--surface-2)); }
+  .bg-primary-muted    { background: hsl(var(--primary-muted)); }
+  .bg-secondary-muted  { background: hsl(var(--secondary-muted)); }
+
+  /* Char animation wrapper */
+  .char-wrap { overflow: hidden; display: inline-block; vertical-align: bottom; }
+
+  /* Clip reveal helper */
+  .clip-hidden { clip-path: inset(0 100% 0 0); }
+  .clip-show   { clip-path: inset(0 0% 0 0); }
 }
+
+/* ── Skeleton shimmer — blush-rose base with violet highlight sweep ── */
+@keyframes sk-sweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(310 28% 94%) 0%,
+    hsl(248 18% 96%) 40%,
+    hsl(310 22% 92%) 60%,
+    hsl(310 28% 94%) 100%
+  );
+  background-size: 200% 100%;
+  animation: sk-sweep 1.6s ease-in-out infinite;
+}
+
+/* ── Custom Cursor — primary dot, secondary ring ── */
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: hsl(310 68% 38%);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.06s linear;
+}
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid hsl(248 46% 40% / 0.45);
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+body:has(a:hover, button:hover) #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: hsl(248 46% 40% / 0.8);
+}
+
+/* ── Lenis ── */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }

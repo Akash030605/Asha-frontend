@@ -19,27 +19,20 @@ interface CollectionItem {
   isFeatured: boolean;
 }
 
+import { useQuery } from "@tanstack/react-query";
+
 const LehengasCollection = () => {
-  const [lehengas, setLehengas] = useState<CollectionItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: lehengas = [], isLoading: loading, error: queryError } = useQuery({
+    queryKey: ["lehengasCollection"],
+    queryFn: async () => {
+      const response = await apiFetch<{ data: { lehengas: CollectionItem[] } }>(
+        "/api/lehengas?limit=50"
+      );
+      return response.data?.lehengas || [];
+    },
+  });
 
-  useEffect(() => {
-    const fetchLehengas = async () => {
-      try {
-        setLoading(true);
-        const response = await apiFetch<{ data: { lehengas: CollectionItem[] } }>("/api/lehengas?limit=50");
-        setLehengas(response.data?.lehengas || []);
-      } catch (err: any) {
-        console.error("Failed to fetch lehengas:", err);
-        setError(err?.message || "Failed to load lehengas collection");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLehengas();
-  }, []);
+  const error = queryError?.message || null;
 
   return (
     <div className="min-h-screen">

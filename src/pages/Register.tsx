@@ -43,7 +43,7 @@ const Register = () => {
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
             <h1 className="text-3xl font-serif font-bold text-primary mb-2">
-              Elegance Atelier
+              Asha Boutique
             </h1>
           </Link>
           <p className="text-muted-foreground">Create your account</p>
@@ -117,14 +117,7 @@ const Register = () => {
             <div className="flex items-start gap-2 text-sm">
               <input type="checkbox" className="rounded mt-1" required />
               <span className="text-muted-foreground">
-                I agree to the{" "}
-                <Link to="/terms" className="text-primary hover:underline">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link to="/privacy" className="text-primary hover:underline">
-                  Privacy Policy
-                </Link>
+                I agree to the Terms of Service and Privacy Policy
               </span>
             </div>
 

@@ -525,10 +525,6 @@ const Collection = () => {
                   }
                   alt={item.name}
                   className="w-full h-full object-cover"
-                  onLoad={() => {
-                    // Helpful while wiring up the admin UI; safe to remove later.
-                    console.log("✅ Image loaded successfully:", item.public_id || item.image);
-                  }}
                   onError={(e) => {
                     if (e.currentTarget.src.includes("/placeholder.svg")) return;
                     e.currentTarget.src = "/placeholder.svg";

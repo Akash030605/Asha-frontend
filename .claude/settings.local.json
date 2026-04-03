@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"^ui$\")",
+      "Bash(xargs wc:*)",
+      "Bash(ls -la \"d:\\\\WebDevlopement\\\\Asha-frontend\\\\src\\\\assets\\\\logo\"\" 2>/dev/null || ls -la \"/d/WebDevlopement/Asha-frontend/src/assets/logo/ \")",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(npm list:*)",
+      "Bash(npm run:*)",
+      "Bash(bash /tmp/analyze_files.sh)",
+      "Bash(grep -h \"^import\" /d/WebDevlopement/Asha-frontend/src/**/*.tsx /d/WebDevlopement/Asha-frontend/src/**/*.ts)",
+      "Bash(xargs grep:*)",
+      "Bash(grep -h \"from \\\\\"@/components/ui/\" /d/WebDevlopement/Asha-frontend/src/**/*.tsx /d/WebDevlopement/Asha-frontend/src/**/*.ts)",
+      "Bash(grep -E \"\\\\.tsx$\")",
+      "Bash(grep -h \"^import {\" /d/WebDevlopement/Asha-frontend/src/**/*.tsx /d/WebDevlopement/Asha-frontend/src/**/*.ts)",
+      "Bash(rm -f .mcp.json .opencode.json)",
+      "Bash(rm -rf .cursor/)",
+      "Bash(ls -la /d/WebDevlopement/Asha-frontend/.env*)",
+      "Bash(grep -r \"\\\\.jpg\\\\|\\\\.png\" /d/WebDevlopement/Asha-frontend/src/components/*.tsx)"
+    ]
+  }
+}

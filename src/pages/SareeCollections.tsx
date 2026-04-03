@@ -19,27 +19,18 @@ interface CollectionItem {
   isFeatured: boolean;
 }
 
+import { useQuery } from "@tanstack/react-query";
+
 const SareesCollection = () => {
-  const [sarees, setSarees] = useState<CollectionItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: sarees = [], isLoading: loading, error: queryError } = useQuery({
+    queryKey: ["sareesCollection"],
+    queryFn: async () => {
+      const response = await apiFetch<{ data: { sarees: CollectionItem[] } }>("/api/sarees?limit=50");
+      return response.data?.sarees || [];
+    },
+  });
 
-  useEffect(() => {
-    const fetchSarees = async () => {
-      try {
-        setLoading(true);
-        const response = await apiFetch<{ data: { sarees: CollectionItem[] } }>("/api/sarees?limit=50");
-        setSarees(response.data?.sarees || []);
-      } catch (err: any) {
-        console.error("Failed to fetch sarees:", err);
-        setError(err?.message || "Failed to load sarees collection");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSarees();
-  }, []);
+  const error = queryError?.message || null;
 
   return (
     <div className="min-h-screen">

@@ -82,8 +82,8 @@ const Orders = () => {
       const res: any = await apiFetch("/admin/owner/users?limit=1000", { token });
       const list = res.data?.users || res.data || [];
       setCustomers(list);
-    } catch (err: any) {
-      console.error("Failed to load customers:", err);
+    } catch {
+      // silently fail — UI shows empty state
     }
   };
 
@@ -93,8 +93,8 @@ const Orders = () => {
       const res: any = await apiFetch("/admin/owner/works?limit=1000", { token });
       const list = res.data?.works || res.data || [];
       setWorks(list);
-    } catch (err: any) {
-      console.error("Failed to load works:", err);
+    } catch {
+      // silently fail — UI shows empty state
     }
   };
 

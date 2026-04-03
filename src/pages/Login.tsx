@@ -36,7 +36,7 @@ const Login = () => {
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
             <h1 className="text-3xl font-serif font-bold text-primary mb-2">
-              Elegance Atelier
+              Asha Boutique
             </h1>
           </Link>
           <p className="text-muted-foreground">Welcome back</p>
@@ -71,14 +71,11 @@ const Login = () => {
               />
             </div>
 
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center text-sm">
               <label className="flex items-center gap-2">
                 <input type="checkbox" className="rounded" />
                 <span className="text-muted-foreground">Remember me</span>
               </label>
-              <Link to="/forgot-password" className="text-primary hover:underline">
-                Forgot password?
-              </Link>
             </div>
 
             <Button
