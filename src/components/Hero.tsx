@@ -93,7 +93,7 @@ export default function Hero() {
 
           <div className="overflow-hidden mb-6">
             <p className="hero-line text-[11px] font-sans tracking-[0.4em] uppercase text-white/40">
-              Est. 2009 · Mumbai, India
+              Est. 2010
             </p>
           </div>
 

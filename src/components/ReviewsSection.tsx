@@ -6,10 +6,10 @@ import { Star } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 const reviews = [
-  { id: 1, name: "Priya Mehta",   city: "Mumbai",    text: "The most beautiful piece I've ever owned. Exquisite attention to detail and truly personal service." },
-  { id: 2, name: "Ananya Singh",  city: "Delhi",     text: "Three years, many occasions. The quality is consistently exceptional and the experience is always personal." },
-  { id: 3, name: "Ritu Sharma",   city: "Bangalore", text: "Outstanding craftsmanship and quality of material. I recommend Asha Boutique to everyone I know." },
-  { id: 4, name: "Kavya Reddy",   city: "Hyderabad", text: "Wore my piece to a family celebration. Received compliments from every single guest. Stunning work." },
+  { id: 1, name: "Ashima Mathur",   city: "Bangalore",    text: "You can absolutely trust Asha di for all your stitching needs. She stitches everything exactly as per your requirements. The outfits come out so beautiful! You can try out the outfits at her boutique itself and if you need adjustments she alters it to suit your needs. I've gotten several blouses and a lehenga stitched from her and they've all come out PERFECT! She meets the time commitments always. I'm so relieved to finally find a tailor in Bangalore that I can trust! Thanks ever so much Asha di 🙏🙏" },
+  { id: 2, name: "Bhavna Ghai",  city: "Bangalore",     text: "The Best Boutique with the Most Amazing Team. If you’re still searching for the perfect boutique in Bangalore, this is the one! Their work is top-notch, and the quality is outstanding. I got my blouse stitched here for a special occasion, and they absolutely nailed it, the attention to detail was impeccable. Truly impressive work!" },
+  { id: 3, name: "Swathi Vijaysimha",   city: "Bangalore", text: "I wanted a blouse stitched just like a Pinterest picture I shared and they stitched it exactly the same way. The finishing is very neat, the fit is absolutely perfect and it was stitched and ready on the committed date. Highly recommend this boutique for blouse stitching and any alterations!" },
+  { id: 4, name: "Duvve Gautami",   city: "Bangalore", text: "The best boutique in the whole of Bangalore. Got one thing made from them and haven’t stopped since. All my traditional wear is stitched by them. They deliver what you ask and the fittings are always flawless. Highly recommend them!" },
 ];
 
 export default function ReviewsSection() {

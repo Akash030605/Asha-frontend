@@ -14,7 +14,7 @@ interface ProductCardProps {
   className?: string;
 }
 
-const WHATSAPP = "918123456789";
+const WHATSAPP = "919900669011";
 
 function ProductCard({ id, name, price, image, category, isNew, isSale, className }: ProductCardProps) {
   const imgRef = useRef<HTMLImageElement>(null);

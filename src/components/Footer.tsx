@@ -18,7 +18,6 @@ const cols = [
   {
     heading: "Help",
     links: [
-      { label: "My Orders",   href: "/my-orders" },
       { label: "Admin Login", href: "/admin-login" },
     ],
   },
@@ -52,7 +51,7 @@ export default function Footer() {
               <span className="font-sans text-[10px] tracking-[0.22em] uppercase ml-2 text-white/35">Boutique</span>
             </div>
             <p className="text-[13px] text-white/45 leading-relaxed mb-7 max-w-[220px]">
-              Crafting timeless elegance through exquisite fashion and bespoke tailoring since 2009.
+              Crafting timeless elegance through exquisite fashion and bespoke tailoring since 2010.
             </p>
             <div className="flex gap-3">
               {[Instagram, Facebook, Youtube].map((Icon, i) => (
@@ -83,9 +82,9 @@ export default function Footer() {
           <div className="ft-reveal">
             <h4 className="text-[9px] tracking-[0.35em] uppercase text-white/30 mb-5 font-sans">Contact</h4>
             <ul className="space-y-3 text-[13px] text-white/50">
-              <li className="flex items-start gap-3"><MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-white/25" /><span>Mumbai, India</span></li>
-              <li className="flex items-center gap-3"><Phone className="w-3.5 h-3.5 flex-shrink-0 text-white/25" /><span>+91 98765 43210</span></li>
-              <li className="flex items-center gap-3"><Mail className="w-3.5 h-3.5 flex-shrink-0 text-white/25" /><span>hello@ashaboutique.in</span></li>
+              <li className="flex items-start gap-3"><MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-white/25" /><span>Bangalore, India</span></li>
+              <li className="flex items-center gap-3"><Phone className="w-3.5 h-3.5 flex-shrink-0 text-white/25" /><span>+91 9900669011</span></li>
+              <li className="flex items-center gap-3"><Mail className="w-3.5 h-3.5 flex-shrink-0 text-white/25" /><span>ashaboutique19@gmail.com</span></li>
             </ul>
           </div>
         </div>

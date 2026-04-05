@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import heroImg from "@/assets/hero-1.jpg";
+import heroImg from "@/assets/About/ASHA.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -142,7 +142,7 @@ export default function AboutSection() {
 
           <div className="absolute bottom-0 left-0 px-7 py-5" style={{ background: "hsl(30 14% 97%)" }}>
             <p className="text-[9px] tracking-[0.28em] uppercase" style={{ color: "hsl(248 12% 56%)" }}>Est.</p>
-            <p className="font-serif font-bold" style={{ fontSize: "2.2rem", lineHeight: 1, color: "hsl(310 68% 38%)" }}>2009</p>
+            <p className="font-serif font-bold" style={{ fontSize: "2.2rem", lineHeight: 1, color: "hsl(310 68% 38%)" }}>2010</p>
           </div>
         </div>
       </div>
